@@ -28,8 +28,8 @@ class ThemeSwitchNegotiator implements ThemeNegotiatorInterface {
 
         $negotiator = \Drupal::service('domain.negotiator');
         $domain = $negotiator->getActiveDomain();
-        $doaminThemes = unserialize(\Drupal::state()->get('domainthemes'));
-        if (array_key_exists($domain->id(), $doaminThemes)) {
+        $doaminThemes = array_filter(unserialize(\Drupal::state()->get('domainthemes')));
+        if ((is_array($doaminThemes)) && (count($doaminThemes)>=1) && (array_key_exists($domain->id(), $doaminThemes))) {
             return TRUE;
         }
         
@@ -49,11 +49,9 @@ class ThemeSwitchNegotiator implements ThemeNegotiatorInterface {
     public function determineActiveTheme(RouteMatchInterface $route_match) {
         $negotiator = \Drupal::service('domain.negotiator');
         $domain = $negotiator->getActiveDomain();
-        $doaminThemes = unserialize(\Drupal::state()->get('domainthemes'));
-        $DomainThemeFlag=null;
-        if (array_key_exists($domain->id(), $doaminThemes)) {
-            $DomainThemeFlag = TRUE;
-		return $doaminThemes[$domain->id()];
+        $doaminThemes = array_filter(unserialize(\Drupal::state()->get('domainthemes')));        
+        if (is_array($doaminThemes) && (count($doaminThemes)>=1) && isset($domain->id()) && (array_key_exists($domain->id(), $doaminThemes))) {            
+            return $doaminThemes[$domain->id()];
         }
     }
 }

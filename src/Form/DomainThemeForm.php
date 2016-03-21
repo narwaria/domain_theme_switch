@@ -74,7 +74,7 @@ class DomainThemeForm extends FormBase {
         foreach ($AllDomain as $key => $value) {
             $domainTheme[$key]=$form_state->getValue($key);
         } 
-        \Drupal::state()->set('domainthemes',serialize($domainTheme));
+        \Drupal::state()->set('domainthemes',serialize(array_filter($domainTheme)));
         drupal_set_message("Domain theme configuration saved succefully");
     }
 
